@@ -9,8 +9,9 @@ import session from 'express-session'
 api.use(session({
     secret: '.l,rtkdyfhgs.xdsdalkrdfgkcdhmsrfkx', // för att salta våra session ids
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // vi SKA använda secure cookies i produktion, MEN INTE i dev
+    httpOnly: true, // hidden from JS document.cookie
+    saveUninitialized: false, // save session even if there is no data in it?
+    cookie: { secure: false } // vi SKA använda secure cookies i produktion, MEN KAN INTE i dev
 }))
 
 import mongoose from 'mongoose'

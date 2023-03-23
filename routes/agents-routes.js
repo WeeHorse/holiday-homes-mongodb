@@ -2,13 +2,17 @@
 import Router from "express"
 const agentsRouter = Router();
 
+// krypto
+import getHash from "../utils/get-hash.js"
+
 // schema
 import mongoose, {Schema} from 'mongoose'
 
 const agentSchema = new Schema({
     name: String,
     email: String,
-    password: String
+    password: String,
+    homes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'homes' }]
 })
 mongoose.model('agents', agentSchema)
 
@@ -29,7 +33,7 @@ agentsRouter.post('/', async (request, response) => {
     const agents = new mongoose.models.agents()
     agents.name = request.body.name,
     agents.email = request.body.email,
-    agents.password = request.body.password
+    agents.password = getHash(request.body.password)
     await agents.save()
     response.sendStatus(201)
 })

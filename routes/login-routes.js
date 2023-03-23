@@ -2,13 +2,16 @@
 import Router from "express"
 const loginRouter = Router();
 
+// krypto
+import getHash from "../utils/get-hash.js"
+
 // schema
 import mongoose from 'mongoose'
 
 loginRouter.post('/', async (request, response) => {
     let result = await mongoose.models.agents.findOne({
         email: request.body.email,
-        password: request.body.password
+        password: getHash(request.body.password)
     })
     if (result) {
         request.session.agent = result
